@@ -19,6 +19,6 @@ namespace Banking.Models
 
         public DateTime TransactionDate { get; set; }
 
-        public int TransactionAmount { get; set; }
+        public double TransactionAmount { get; set; }
     }
 }

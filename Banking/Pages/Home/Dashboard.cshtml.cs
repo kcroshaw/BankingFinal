@@ -82,20 +82,16 @@ namespace Banking.Pages
             string transType = "Transfer";
             var accountFrom = Request.Form["transferFrom"];
             var accountTo = Request.Form["transTo"];
-
-            //convert amount to pennies and store in positive and negative variables
-            int posAmount = ConvertToPennies(Request.Form["transferAmt"]);
-            int negAmount = posAmount * (-1); // doing this so a negative value will reflect in the transaction record
-
-
-            // this is where we will need to handle the changing of the balances and adding to
-            // a list of transactions
-            //this is the original test code Kolby made************
             var userName = User.Identity.Name;
             ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.UserName == userName);
-            ApplicationUser.SavingsBalance = 10;
-            int x = ApplicationUser.SavingsBalance;
-            Transaction.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            //convert amount to pennies
+            int amtInPennies = ConvertToPennies(Request.Form["transferAmt"]);
+            
+
+            //ApplicationUser.SavingsBalance = 10;
+            //int x = ApplicationUser.SavingsBalance;
+            //Transaction.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //ApplicationUser.SavingsBalance = 10;
             //int x = ApplicationUser.SavingsBalance;
             //Transaction.TransactionType = TransactionType.Transfer;
@@ -103,55 +99,59 @@ namespace Banking.Pages
             //Transaction.AccountID = 11;
             //Transaction.Account = "savings";
             //Transaction.TransactionDate = DateTime.Now;
-            _context.Transaction.Add(Transaction);
-            await _context.SaveChangesAsync();
-            //CreateTransaction(transType, )
+
             //************************************
 
             //figure out the FROM account stuff first
             if (accountFrom == "Savings" || accountFrom == "Checking")//if the account FROM is checking or savings use negative amount and create transaction record
             {
-                CreateTransaction(transType, accountFrom, negAmount);
-
+                CreateTransaction(transType, accountFrom, amtInPennies*(-1));
+                _context.Transaction.Add(Transaction);
+                await _context.SaveChangesAsync();
                 if (accountFrom == "Savings")
                 {
                     //adjust savings balance
-                    ApplicationUser.SavingsBalance += negAmount;
+                    ApplicationUser.SavingsBalance += amtInPennies * (-1);
                 }
                 else if (accountFrom == "Checking")
                 {
                     //adjust checking balance
-                    ApplicationUser.CheckingBalance += negAmount;
+                    ApplicationUser.CheckingBalance += amtInPennies * (-1);
                 }
 
             }
             else if (accountFrom == "Loan")//we are going to add the amount to the loan
             {
-                CreateTransaction(transType, accountFrom, posAmount);
-                ApplicationUser.LoanBalance += posAmount;
+                CreateTransaction(transType, accountFrom, amtInPennies);
+                _context.Transaction.Add(Transaction);
+                await _context.SaveChangesAsync();
+                ApplicationUser.LoanBalance += amtInPennies;
             }
 
             //figure out the TO account stuff next
             if (accountTo == "Savings" || accountTo == "Checking")//if the account TO is checking or savings use positive amount and create transaction record
             {
-                CreateTransaction(transType, accountFrom, posAmount);
-
+                CreateTransaction(transType, accountFrom, amtInPennies);
+                _context.Transaction.Add(Transaction);
+                await _context.SaveChangesAsync();
                 if (accountTo == "Savings")
                 {
                     //adjust savings balance
-                    ApplicationUser.SavingsBalance += posAmount;
+                    ApplicationUser.SavingsBalance += amtInPennies;
                 }
                 else if (accountTo == "Checking")
                 {
                     //adjust checking balance
-                    ApplicationUser.CheckingBalance += posAmount;
+                    ApplicationUser.CheckingBalance += amtInPennies;
                 }
 
             }
             else if (accountTo == "Loan")//we are going to subtract the amount from the loan
             {
-                CreateTransaction(transType, accountFrom, negAmount);
-                ApplicationUser.LoanBalance += negAmount;
+                CreateTransaction(transType, accountFrom, amtInPennies * (-1));
+                _context.Transaction.Add(Transaction);
+                await _context.SaveChangesAsync();
+                ApplicationUser.LoanBalance += amtInPennies * (-1);
             }
 
             return RedirectToPage("./Index");
@@ -160,8 +160,63 @@ namespace Banking.Pages
         //If Deposit/Withdraw button is clicked
         public async Task<IActionResult> OnPostDepositWithdraw()
         {
-
             //TODO: create logic for deposit/withdraw modal
+            var userName = User.Identity.Name;
+            ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.UserName == userName);
+
+            var transType = Request.Form["transactionType"];
+            var account = Request.Form["depWthAccount"];
+            var amtInPennies = ConvertToPennies(Request.Form["depWthAmt"]);
+
+            if (transType == "Deposit")
+            {
+                if(account == "Savings" || account  == "Checking")
+                {
+                    if(account == "Savings")
+                    {
+                        ApplicationUser.SavingsBalance += amtInPennies;
+                    }
+                    else if(account == "Checking")
+                    {
+                        ApplicationUser.CheckingBalance += amtInPennies;
+                    }
+                    
+                    CreateTransaction(transType, account, amtInPennies);
+                    _context.Transaction.Add(Transaction);
+                    await _context.SaveChangesAsync();
+                }
+                else if(account == "Loan")
+                {
+                    ApplicationUser.CheckingBalance += amtInPennies*(-1);
+                    CreateTransaction(transType, account, amtInPennies*(-1));
+                    _context.Transaction.Add(Transaction);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            else if(transType == "Withdraw")
+            {
+                if (account == "Savings" || account == "Checking")
+                {
+                    if (account == "Savings")
+                    {
+                        ApplicationUser.CheckingBalance += amtInPennies*(-1);
+                    }
+                    else if (account == "Checking")
+                    {
+                        ApplicationUser.CheckingBalance += amtInPennies*(-1);
+                    }
+                    CreateTransaction(transType, account, amtInPennies * (-1));
+                    _context.Transaction.Add(Transaction);
+                    await _context.SaveChangesAsync();
+                }
+                else if (account == "Loan")
+                {
+                    ApplicationUser.CheckingBalance += amtInPennies;
+                    CreateTransaction(transType, account, amtInPennies);
+                    _context.Transaction.Add(Transaction);
+                    await _context.SaveChangesAsync();
+                }
+            }
 
             return RedirectToPage("./Index");
         }
