@@ -13,12 +13,26 @@ namespace Banking.Pages
         private readonly ApplicationDBContext _context;
         private readonly IUnitOfWork _unitOfWork;
 
-        public int savingsBalance = 0;
-        public int checkingBalance = 0;
-        public int loanBalance = 0;
-        public int transactionAmount = 0;
+        public double savingsBalance = 0.00;
+        public double checkingBalance = 0.00;
+        public double loanBalance = 0.00;
+        public double transactionAmount = 0.00;
 
+        public int ConvertToPennies(string amount)
+        {
+            double dollarAmt = Convert.ToDouble(amount);
 
+            int pennies = (int)(dollarAmt * 100);
+
+            return pennies;
+        }
+
+        public double ConvertFromPennies(int pennies)
+        {
+            double dollarAmt = (double)(pennies / 100);
+
+            return dollarAmt;
+        }
 
         public DashboardModel(ApplicationDBContext context, IUnitOfWork unitOfWork)
         {
@@ -36,9 +50,9 @@ namespace Banking.Pages
                 var userName = User.Identity.Name;
                 //getting the current application user and setting their balances to display on the dashboard page
                 ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.UserName == userName);
-                savingsBalance = ApplicationUser.SavingsBalance;
-                checkingBalance = ApplicationUser.CheckingBalance;
-                loanBalance = ApplicationUser.LoanBalance;
+                savingsBalance = ConvertFromPennies(ApplicationUser.SavingsBalance);
+                checkingBalance = ConvertFromPennies(ApplicationUser.CheckingBalance);
+                loanBalance = ConvertFromPennies(ApplicationUser.LoanBalance);
 
                 // We will also need to populate a list of all transactions here that are specific
                 // to the applicationuser
