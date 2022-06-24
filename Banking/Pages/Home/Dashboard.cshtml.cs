@@ -13,23 +13,23 @@ namespace Banking.Pages
         private readonly ApplicationDBContext _context;
         private readonly IUnitOfWork _unitOfWork;
 
-        public double savingsBalance = 0.00;
-        public double checkingBalance = 0.00;
-        public double loanBalance = 0.00;
-        public double transactionAmount = 0.00;
+        public decimal savingsBalance = 0.00M;
+        public decimal checkingBalance = 0.00M;
+        public decimal loanBalance = 0.00M;
+        public decimal transactionAmount = 0.00M;
 
         public int ConvertToPennies(string amount)
         {
-            double dollarAmt = Convert.ToDouble(amount);
+            decimal dollarAmt = Convert.ToDecimal(amount);
 
             int pennies = (int)(dollarAmt * 100);
 
             return pennies;
         }
 
-        public double ConvertFromPennies(int pennies)
+        public decimal ConvertFromPennies(int pennies)
         {
-            double dollarAmt = (double)(pennies / 100);
+            decimal dollarAmt = Convert.ToDecimal(pennies / 100);
 
             return dollarAmt;
         }
@@ -187,7 +187,7 @@ namespace Banking.Pages
                 }
                 else if(account == "Loan")
                 {
-                    ApplicationUser.CheckingBalance += amtInPennies*(-1);
+                    ApplicationUser.LoanBalance += amtInPennies*(-1);
                     CreateTransaction(transType, account, amtInPennies*(-1));
                     _context.Transaction.Add(Transaction);
                     await _context.SaveChangesAsync();
@@ -199,7 +199,7 @@ namespace Banking.Pages
                 {
                     if (account == "Savings")
                     {
-                        ApplicationUser.CheckingBalance += amtInPennies*(-1);
+                        ApplicationUser.SavingsBalance += amtInPennies*(-1);
                     }
                     else if (account == "Checking")
                     {
@@ -211,7 +211,7 @@ namespace Banking.Pages
                 }
                 else if (account == "Loan")
                 {
-                    ApplicationUser.CheckingBalance += amtInPennies;
+                    ApplicationUser.LoanBalance += amtInPennies;
                     CreateTransaction(transType, account, amtInPennies);
                     _context.Transaction.Add(Transaction);
                     await _context.SaveChangesAsync();

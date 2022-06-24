@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Banking.Models
 {
@@ -19,6 +20,8 @@ namespace Banking.Models
 
         public DateTime TransactionDate { get; set; }
 
-        public double TransactionAmount { get; set; }
+        [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "Can't have more than 2 decimal places")]
+        [Precision(18,2)]
+        public decimal TransactionAmount { get; set; }
     }
 }
