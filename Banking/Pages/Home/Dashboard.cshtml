@@ -46,7 +46,7 @@
                   <option>Checking</option>
                   <option>Loan</option>
               </select><br />
-              <span>Amount:</span><input type="text" id="transferAmt" asp-for="Transaction.TransactionAmount"/><br />
+              <span>Amount:</span><input type="text" name="transferAmt" /><br />
               <input asp-page-handler="Transfer" type="submit" name="transferSubmit" value="Submit"/>
           </form>
         </div>
@@ -125,15 +125,15 @@
     <table class="account-info">
         <tr>
             <th class="account-info"><a asp-controller="Home" asp-action="CheckingTransactionHistory">Checking</a></th>
-            <td class="account-info">@Model.checkingBalance</td>
+            <td class="account-info">@Model.checkingBalance.ToString("0.00")</td>
         </tr>
         <tr>
             <th class="account-info"><a asp-controller="Home" asp-action="SavingsTransactionHistory">Savings</a></th>
-            <td class="account-info">@Model.savingsBalance</td>
+            <td class="account-info">@Model.savingsBalance.ToString("0.00")</td>
         </tr>
         <tr>
             <th class="account-info"><a asp-controller="Home" asp-action="LoanTransactionHistory">Loan</a></th>
-            <td class="account-info">@Model.loanBalance</td>
+            <td class="account-info">@Model.loanBalance.ToString("0.00")</td>
         </tr>
     </table>
     <br />
