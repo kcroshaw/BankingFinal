@@ -87,21 +87,7 @@ namespace Banking.Pages
 
             //convert amount to pennies
             int amtInPennies = ConvertToPennies(Request.Form["transferAmt"]);
-            
-
-            //ApplicationUser.SavingsBalance = 10;
-            //int x = ApplicationUser.SavingsBalance;
-            //Transaction.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //ApplicationUser.SavingsBalance = 10;
-            //int x = ApplicationUser.SavingsBalance;
-            //Transaction.TransactionType = TransactionType.Transfer;
-            //Transaction.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //Transaction.AccountID = 11;
-            //Transaction.Account = "savings";
-            //Transaction.TransactionDate = DateTime.Now;
-
-            //************************************
-
+  
             //figure out the FROM account stuff first
             if (accountFrom == "Savings" || accountFrom == "Checking")//if the account FROM is checking or savings use negative amount and create transaction record
             {
@@ -124,7 +110,6 @@ namespace Banking.Pages
                 CreateTransaction(transType, accountFrom, amtInPennies);
                 _context.Transaction.Add(Transaction);
             }
-            await _context.SaveChangesAsync();
 
             //figure out the TO account stuff next
             if (accountTo == "Savings" || accountTo == "Checking")//if the account TO is checking or savings use positive amount and create transaction record
@@ -147,7 +132,6 @@ namespace Banking.Pages
                 ApplicationUser.LoanBalance += amtInPennies * (-1);
                 CreateTransaction(transType, accountFrom, amtInPennies * (-1));
                 _context.Transaction.Add(Transaction);
-                
             }
             
             await _context.SaveChangesAsync();
