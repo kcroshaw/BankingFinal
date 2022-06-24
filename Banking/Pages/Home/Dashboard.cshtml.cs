@@ -18,6 +18,8 @@ namespace Banking.Pages
         public int loanBalance = 0;
         public int transactionAmount = 0;
 
+
+
         public DashboardModel(ApplicationDBContext context, IUnitOfWork unitOfWork)
         {
             _context = context;
@@ -52,10 +54,11 @@ namespace Banking.Pages
             Transaction.TransactionDate = DateTime.Now;
             Transaction.TransactionType = transactionType;
             Transaction.Account = account;
-            Transaction.TransactionAmount = amount;
+            Transaction.TransactionAmount = ConvertFromPennies(amount);
             Transaction.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         }
+
 
         public async Task<IActionResult> OnPostTransfer()
         {
@@ -65,7 +68,9 @@ namespace Banking.Pages
             string transType = "Transfer";
             var accountFrom = Request.Form["transferFrom"];
             var accountTo = Request.Form["transTo"];
-            int posAmount = int.Parse(Request.Form["transferAmt"]);
+
+            //convert amount to pennies and store in positive and negative variables
+            int posAmount = ConvertToPennies(Request.Form["transferAmt"]);
             int negAmount = posAmount * (-1); // doing this so a negative value will reflect in the transaction record
 
 
