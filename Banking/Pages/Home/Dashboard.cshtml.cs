@@ -111,7 +111,6 @@ namespace Banking.Pages
             }
             await _context.SaveChangesAsync(false);
 
-            await _context.DisposeAsync();
 
             //figure out the TO account stuff next
             if (accountTo == "Savings" || accountTo == "Checking")//if the account TO is checking or savings use positive amount and create transaction record
