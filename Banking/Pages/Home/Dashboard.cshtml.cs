@@ -111,7 +111,7 @@ namespace Banking.Pages
             }
             await _context.SaveChangesAsync(false);
 
-
+/**************need a sepearate transaction for this section of code *******************/
             //figure out the TO account stuff next
             if (accountTo == "Savings" || accountTo == "Checking")//if the account TO is checking or savings use positive amount and create transaction record
             {
@@ -134,7 +134,7 @@ namespace Banking.Pages
                 CreateTransaction(Transaction, transType, accountFrom, amtInPennies * (-1));
                 _context.Transaction.Add(Transaction);
             }
-            
+/****************************************************************************************/
             await _context.SaveChangesAsync();
             return RedirectToPage("./Index");
         }
