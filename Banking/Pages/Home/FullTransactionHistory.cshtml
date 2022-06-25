@@ -33,6 +33,7 @@
     </head>
     <body>
     <h1 class="display-4 text-center">Full Transaction History</h1>
+    <input type="button" class="left" value="Back" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");" />
         <div class="tableFixHead">
             <table>
                 <thead>
@@ -63,6 +64,5 @@
                 </tbody>
             </table>
         </div>
-        <input type="button" class="centered"  value="Back" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");" />
-    </body>
+      </body>
 </html>

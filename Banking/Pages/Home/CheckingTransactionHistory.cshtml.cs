@@ -5,11 +5,17 @@ namespace Banking.Pages.Home
 {
     public class CheckingTransactionHistoryModel : PageModel
     {
-        public int v;
+        private Data.ApplicationDBContext db;
+        public List<Banking.Models.Transaction> Tran;
+
+        public CheckingTransactionHistoryModel(Data.ApplicationDBContext _db)
+        {
+            db = _db;
+        }
 
         public void OnGet()
         {
-            v = 3;
+            Tran = db.Transaction.ToList();
         }
     }
 }
