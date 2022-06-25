@@ -41,7 +41,9 @@ namespace Banking.Pages
         }
 
         [BindProperty]
-        public Transaction Transaction { get; set; }
+        public Transaction TransactionA { get; set; }
+        [BindProperty]
+        public Transaction TransactionB { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public IActionResult OnGet()
         {
@@ -100,14 +102,14 @@ namespace Banking.Pages
                     //adjust checking balance
                     ApplicationUser.CheckingBalance += amtInPennies * (-1);
                 }
-                CreateTransaction(Transaction, transType, accountFrom, amtInPennies * (-1));
-                _context.Transaction.Add(Transaction);
+                CreateTransaction(TransactionA, transType, accountFrom, amtInPennies * (-1));
+                _context.Transaction.Add(TransactionA);
             }
             else if (accountFrom == "Loan")//we are going to add the amount to the loan
             {
                 ApplicationUser.LoanBalance += amtInPennies;
-                CreateTransaction(Transaction, transType, accountFrom, amtInPennies);
-                _context.Transaction.Add(Transaction);
+                CreateTransaction(TransactionA, transType, accountFrom, amtInPennies);
+                _context.Transaction.Add(TransactionA);
             }
             await _context.SaveChangesAsync(false);
 
@@ -125,14 +127,14 @@ namespace Banking.Pages
                     //adjust checking balance
                     ApplicationUser.CheckingBalance += amtInPennies;
                 }
-                CreateTransaction(Transaction, transType, accountFrom, amtInPennies);
-                _context.Transaction.Add(Transaction);
+                CreateTransaction(TransactionB, transType, accountFrom, amtInPennies);
+                _context.Transaction.Add(TransactionB);
             }
             else if (accountTo == "Loan")//we are going to subtract the amount from the loan
             {
                 ApplicationUser.LoanBalance += amtInPennies * (-1);
-                CreateTransaction(Transaction, transType, accountFrom, amtInPennies * (-1));
-                _context.Transaction.Add(Transaction);
+                CreateTransaction(TransactionB, transType, accountFrom, amtInPennies * (-1));
+                _context.Transaction.Add(TransactionB);
             }
 /****************************************************************************************/
             await _context.SaveChangesAsync();
@@ -163,15 +165,15 @@ namespace Banking.Pages
                         ApplicationUser.CheckingBalance += amtInPennies;
                     }
                     
-                    CreateTransaction(Transaction, transType, account, amtInPennies);
-                    _context.Transaction.Add(Transaction);
+                    CreateTransaction(TransactionA, transType, account, amtInPennies);
+                    _context.Transaction.Add(TransactionA);
                     await _context.SaveChangesAsync();
                 }
                 else if(account == "Loan")
                 {
                     ApplicationUser.LoanBalance += amtInPennies*(-1);
-                    CreateTransaction(Transaction, transType, account, amtInPennies*(-1));
-                    _context.Transaction.Add(Transaction);
+                    CreateTransaction(TransactionA, transType, account, amtInPennies*(-1));
+                    _context.Transaction.Add(TransactionA);
                     await _context.SaveChangesAsync();
                 }
             }
@@ -187,15 +189,15 @@ namespace Banking.Pages
                     {
                         ApplicationUser.CheckingBalance += amtInPennies*(-1);
                     }
-                    CreateTransaction(Transaction, transType, account, amtInPennies * (-1));
-                    _context.Transaction.Add(Transaction);
+                    CreateTransaction(TransactionA, transType, account, amtInPennies * (-1));
+                    _context.Transaction.Add(TransactionA);
                     await _context.SaveChangesAsync();
                 }
                 else if (account == "Loan")
                 {
                     ApplicationUser.LoanBalance += amtInPennies;
-                    CreateTransaction(Transaction, transType, account, amtInPennies);
-                    _context.Transaction.Add(Transaction);
+                    CreateTransaction(TransactionA, transType, account, amtInPennies);
+                    _context.Transaction.Add(TransactionA);
                     await _context.SaveChangesAsync();
                 }
             }
