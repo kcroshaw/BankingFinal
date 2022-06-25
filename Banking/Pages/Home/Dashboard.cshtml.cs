@@ -111,7 +111,7 @@ namespace Banking.Pages
                 CreateTransaction(TransactionA, transType, accountFrom, amtInPennies);
                 _context.Transaction.Add(TransactionA);
             }
-            await _context.SaveChangesAsync(false);
+            
 
 /**************need a sepearate transaction for this section of code *******************/
             //figure out the TO account stuff next
@@ -127,13 +127,13 @@ namespace Banking.Pages
                     //adjust checking balance
                     ApplicationUser.CheckingBalance += amtInPennies;
                 }
-                CreateTransaction(TransactionB, transType, accountFrom, amtInPennies);
+                CreateTransaction(TransactionB, transType, accountTo, amtInPennies);
                 _context.Transaction.Add(TransactionB);
             }
             else if (accountTo == "Loan")//we are going to subtract the amount from the loan
             {
                 ApplicationUser.LoanBalance += amtInPennies * (-1);
-                CreateTransaction(TransactionB, transType, accountFrom, amtInPennies * (-1));
+                CreateTransaction(TransactionB, transType, accountTo, amtInPennies * (-1));
                 _context.Transaction.Add(TransactionB);
             }
 /****************************************************************************************/
