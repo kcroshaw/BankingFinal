@@ -5,8 +5,11 @@ namespace Banking.Pages.Home
 {
     public class CheckingTransactionHistoryModel : PageModel
     {
+        public int v;
+
         public void OnGet()
         {
+            v = 3;
         }
     }
 }

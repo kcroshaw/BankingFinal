@@ -44,7 +44,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                   @* @foreach (var item in /*put list of transactions here*/){
+                   @foreach (var item in @Model.Tran){
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.TransactionDate)
@@ -59,7 +59,7 @@
                                 @Html.DisplayFor(modelItem => item.TransactionAmount)
                             </td>
                         </tr>
-                    }*@
+                    }
                 </tbody>
             </table>
         </div>
