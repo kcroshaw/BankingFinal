@@ -46,7 +46,7 @@
                   <option>Checking</option>
                   <option>Loan</option>
               </select><br />
-              <span>Amount:</span><input type="text" name="transferAmt" /><br />
+              <span>Amount:</span><input type="text" name="transferAmt" value="0.00" /><br />
               <input asp-page-handler="Transfer" type="submit" name="transferSubmit" value="Submit"/>
           </form>
         </div>
@@ -81,7 +81,7 @@
                   <option>Checking</option>
                   <option>Loan</option>
               </select>
-              <span>Amount:</span><input type="text" name="depWthAmt" /><br />
+              <span>Amount:</span><input type="text" name="depWthAmt" value="0.00" /><br />
               <input asp-page-handler="DepositWithdraw" type="submit" name="depWthSubmit" value="Submit"/>
           </form>
         </div>

@@ -63,14 +63,13 @@ namespace Banking.Pages
                 return RedirectToPage("/Account/Login", new { area = "Identity" });
         }
 
-        public void CreateTransaction(string transactionType, string account, int amount)
+        public void CreateTransaction(Transaction trans, string transactionType, string account, int amount)
         {
-            Transaction.TransactionDate = DateTime.Now;
-            Transaction.TransactionType = transactionType;
-            Transaction.Account = account;
-            Transaction.TransactionAmount = ConvertFromPennies(amount);
-            Transaction.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+            trans.TransactionDate = DateTime.Now;
+            trans.TransactionType = transactionType;
+            trans.Account = account;
+            trans.TransactionAmount = ConvertFromPennies(amount);
+            trans.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
 
@@ -101,15 +100,18 @@ namespace Banking.Pages
                     //adjust checking balance
                     ApplicationUser.CheckingBalance += amtInPennies * (-1);
                 }
-                CreateTransaction(transType, accountFrom, amtInPennies * (-1));
+                CreateTransaction(Transaction, transType, accountFrom, amtInPennies * (-1));
                 _context.Transaction.Add(Transaction);
             }
             else if (accountFrom == "Loan")//we are going to add the amount to the loan
             {
                 ApplicationUser.LoanBalance += amtInPennies;
-                CreateTransaction(transType, accountFrom, amtInPennies);
+                CreateTransaction(Transaction, transType, accountFrom, amtInPennies);
                 _context.Transaction.Add(Transaction);
             }
+            await _context.SaveChangesAsync(false);
+
+            await _context.DisposeAsync();
 
             //figure out the TO account stuff next
             if (accountTo == "Savings" || accountTo == "Checking")//if the account TO is checking or savings use positive amount and create transaction record
@@ -124,13 +126,13 @@ namespace Banking.Pages
                     //adjust checking balance
                     ApplicationUser.CheckingBalance += amtInPennies;
                 }
-                CreateTransaction(transType, accountFrom, amtInPennies);
+                CreateTransaction(Transaction, transType, accountFrom, amtInPennies);
                 _context.Transaction.Add(Transaction);
             }
             else if (accountTo == "Loan")//we are going to subtract the amount from the loan
             {
                 ApplicationUser.LoanBalance += amtInPennies * (-1);
-                CreateTransaction(transType, accountFrom, amtInPennies * (-1));
+                CreateTransaction(Transaction, transType, accountFrom, amtInPennies * (-1));
                 _context.Transaction.Add(Transaction);
             }
             
@@ -162,14 +164,14 @@ namespace Banking.Pages
                         ApplicationUser.CheckingBalance += amtInPennies;
                     }
                     
-                    CreateTransaction(transType, account, amtInPennies);
+                    CreateTransaction(Transaction, transType, account, amtInPennies);
                     _context.Transaction.Add(Transaction);
                     await _context.SaveChangesAsync();
                 }
                 else if(account == "Loan")
                 {
                     ApplicationUser.LoanBalance += amtInPennies*(-1);
-                    CreateTransaction(transType, account, amtInPennies*(-1));
+                    CreateTransaction(Transaction, transType, account, amtInPennies*(-1));
                     _context.Transaction.Add(Transaction);
                     await _context.SaveChangesAsync();
                 }
@@ -186,14 +188,14 @@ namespace Banking.Pages
                     {
                         ApplicationUser.CheckingBalance += amtInPennies*(-1);
                     }
-                    CreateTransaction(transType, account, amtInPennies * (-1));
+                    CreateTransaction(Transaction, transType, account, amtInPennies * (-1));
                     _context.Transaction.Add(Transaction);
                     await _context.SaveChangesAsync();
                 }
                 else if (account == "Loan")
                 {
                     ApplicationUser.LoanBalance += amtInPennies;
-                    CreateTransaction(transType, account, amtInPennies);
+                    CreateTransaction(Transaction, transType, account, amtInPennies);
                     _context.Transaction.Add(Transaction);
                     await _context.SaveChangesAsync();
                 }
