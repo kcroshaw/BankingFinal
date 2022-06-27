@@ -41,11 +41,13 @@
                         <th>Date</th>
                         <th>Transaction Type</th>
                         <th>Account</th>
-                        <th>Amount</th></>
+                        <th>Amount</th>
+                        <th>@Model.ApplicationUser.Id</th></>
                     </tr>
                 </thead>
                 <tbody>
                    @foreach (var item in @Model.Tran){
+                       if(item.UserID == @Model.ApplicationUser.Id) {
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.TransactionDate)
@@ -59,8 +61,11 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.TransactionAmount)
                             </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserID)
+                            </td>
                         </tr>
-                    }
+                    }}
                 </tbody>
             </table>
         </div>

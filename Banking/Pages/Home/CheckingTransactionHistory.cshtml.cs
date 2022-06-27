@@ -1,21 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Banking.Interfaces;
+using Banking.Data;
 
 namespace Banking.Pages.Home
 {
     public class CheckingTransactionHistoryModel : PageModel
     {
-        private Data.ApplicationDBContext db;
+        private readonly ApplicationDBContext _context;
+        private readonly IUnitOfWork _unitOfWork;
+        public Models.ApplicationUser ApplicationUser { get; set; }
         public List<Banking.Models.Transaction> Tran;
 
-        public CheckingTransactionHistoryModel(Data.ApplicationDBContext _db)
+        public CheckingTransactionHistoryModel(ApplicationDBContext context, IUnitOfWork unitOfWork)
         {
-            db = _db;
+            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public void OnGet()
         {
-            Tran = db.Transaction.ToList();
+            Tran = _context.Transaction.ToList();
+            var userName = User.Identity.Name;
+            //getting the current application user and setting their balances to display on the dashboard page
+            ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.UserName == userName);
+
         }
     }
 }
