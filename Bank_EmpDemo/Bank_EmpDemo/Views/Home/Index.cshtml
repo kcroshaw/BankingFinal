@@ -1,0 +1,143 @@
+﻿@page
+@using Bank_EmpDemo.Models
+@{
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Bootstrap Example</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<h1 class="display-4 text-center">Account Dashboard</h1>
+
+
+<div>
+<div>
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Transfer</button>
+
+  <!-- Modal TRANSFER -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Transfer</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+              <span>From:</span>
+              <select name="transferFrom">
+                  <option>Savings</option>
+                  <option>Checking</option>
+                  <option>Loan</option>
+              </select><br />
+              <span>To:</span> 
+              <select name="transferTo">
+                  <option>Savings</option>
+                  <option>Checking</option>
+                  <option>Loan</option>
+              </select><br />
+              <span>Amount:</span><input type="text" name="transferAmt" value="0.00" /><br />
+              <input asp-page-handler="Transfer" type="submit" name="transferSubmit" value="Submit"/>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">Deposit/Withdraw</button>
+
+  <!-- Modal DEPOSIT/WITHDRAW -->
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Withdraw/Deposit</h4>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+              <select name="transactionType">
+                  <option>Deposit</option>
+                  <option>Withdraw</option>
+              </select>
+              <select name="depWthAccount">
+                  <option>Savings</option>
+                  <option>Checking</option>
+                  <option>Loan</option>
+              </select>
+              <span>Amount:</span><input type="text" name="depWthAmt" value="0.00" /><br />
+              <input asp-page-handler="DepositWithdraw" type="submit" name="depWthSubmit" value="Submit"/>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+@*<div>
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal3">Transactions</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Transaction History</h4>
+        </div>
+        <div class="modal-body">
+          <p>tran   2/2/2022    100.00</p>
+          <p>tran   2/5/2022    -100.00</p>
+          <p>tran   2/10/2022    7800.00</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>*@
+
+</div>
+
+
+<div class="text-center">  
+    <table class="account-info">
+        <tr>
+            <th class="account-info"><a asp-controller="Home" asp-action="CheckingTransactionHistory">Checking</a></th>
+            <td class="account-info">267.85</td>
+        </tr>
+        <tr>
+            <th class="account-info"><a asp-controller="Home" asp-action="SavingsTransactionHistory">Savings</a></th>
+            <td class="account-info">0.00</td>
+        </tr>
+        <tr>
+            <th class="account-info"><a asp-controller="Home" asp-action="LoanTransactionHistory">Loan</a></th>
+            <td class="account-info">-1,000.00</td>
+        </tr>
+    </table>
+    <br />
+    <input type="button" value="Full Transaction History" onclick="@("window.location.href='" + @Url.Action("FullTransactionHistory", "Home") + "'");" />
+</div>
+</body>
+</html>

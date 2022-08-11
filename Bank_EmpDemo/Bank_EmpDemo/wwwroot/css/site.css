@@ -1,0 +1,47 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+table.account-info {
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+    border: 1px solid black;
+}
+
+th.account-info, td.account-info {
+    border: 1px solid black;
+}
+
+th.account-info {
+    text-align: center;
+}
+
+td.account-info {
+    text-align: left;
+}
+
+.centered {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center
+}

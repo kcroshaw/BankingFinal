@@ -1,0 +1,93 @@
+﻿
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+              .tableFixHead {
+                overflow-y: auto;
+                height: 500px;
+                width: 75%;
+                margin-right: auto;
+                margin-left: auto;
+              }
+              .tableFixHead thead th {
+                position: sticky;
+                top: 0;
+              }
+              table {
+                border-collapse: collapse;
+                width: 100%;
+              }
+              th, td {
+                padding: 8px 16px;
+                border: 1px solid #ccc;
+              }
+              th {
+                background: #eee;
+              }
+        </style>
+    </head>
+    <body>
+    <h1 class="display-4 text-center">Full Transaction History</h1>
+    <input type="button" class="left" value="Back" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" />
+        <div class="tableFixHead">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Transaction Type</th>
+                        <th>Account</th>
+                        <th>Amount</th></>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td>
+                                <p>2022-05-27</p>
+                            </td>
+                            <td>
+                                <p>Deposit</p>
+                            </td>
+                            <td>
+                                <p>Saving</p>
+                            </td>
+                            <td>
+                                <p>$2345.90</p>
+                            </td>
+                            <!----------------------------------------------------------------------->
+                             </tr>
+                             <tr>
+                             <td>
+                                <p>2022-07-01</p>
+                            </td>
+                            <td>
+                                <p>Deposit</p>
+                            </td>
+                            <td>
+                                <p>Checking</p>
+                            </td>
+                            <td>
+                                <p>$345.00</p>
+                            </td>
+                            <!----------------------------------------------------------------------->
+                            </tr>
+                            <tr>
+                             
+                             <td>
+                                 <p>2022-07-01</p>
+                            </td>
+                            <td>
+                                 <p>Withdraw</p>
+                            </td>
+                            <td>
+                                <p>Checking</p>
+                            </td>
+                            <td>
+                                <p>-$67.56</p>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+      </body>
+</html>
